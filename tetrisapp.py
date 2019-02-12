@@ -6,6 +6,15 @@ from config import *
 
 class TApp(object):
     def __init__(self):
+        self.stone = None
+        self.stone_x = 0
+        self.stone_y = 0
+        self.game_over = None
+        self.board = None
+        self.level = 0
+        self.score = 0
+        self.lines = 0
+        self.paused = None
         pygame.init()
         pygame.key.set_repeat(100, 25)
         self.width = cell_size * (cols + 6)
@@ -30,7 +39,7 @@ class TApp(object):
         if check_collision(self.board,
                            self.stone,
                            (self.stone_x, self.stone_y)):
-            self.gameover = True
+            self.game_over = True
 
     def init_game(self):
         self.board = new_board()
@@ -92,7 +101,7 @@ class TApp(object):
             pygame.time.set_timer(pygame.USEREVENT + 1, delay)
 
     def move(self, delta_x):
-        if not self.gameover and not self.paused:
+        if not self.game_over and not self.paused:
             new_x = self.stone_x + delta_x
             if new_x < 0:
                 new_x = 0
@@ -109,7 +118,7 @@ class TApp(object):
         sys.exit()
 
     def drop(self, manual):
-        if not self.gameover and not self.paused:
+        if not self.game_over and not self.paused:
             self.score += 1 if manual else 0
             self.stone_y += 1
             if check_collision(self.board,
@@ -135,12 +144,12 @@ class TApp(object):
         return False
 
     def instant_drop(self):
-        if not self.gameover and not self.paused:
+        if not self.game_over and not self.paused:
             while not self.drop(True):
                 pass
 
     def rotate_stone(self):
-        if not self.gameover and not self.paused:
+        if not self.game_over and not self.paused:
             new_stone = rotate_clockwise(self.stone)
             if not check_collision(self.board,
                                    new_stone,
@@ -151,9 +160,9 @@ class TApp(object):
         self.paused = not self.paused
 
     def start_game(self):
-        if self.gameover:
+        if self.game_over:
             self.init_game()
-            self.gameover = False
+            self.game_over = False
 
     def run(self):
         key_actions = {
@@ -167,13 +176,13 @@ class TApp(object):
             'RETURN': self.instant_drop
         }
 
-        self.gameover = False
+        self.game_over = False
         self.paused = False
 
         clock = pygame.time.Clock()
         while 1:
             self.screen.fill((0, 0, 0))
-            if self.gameover:
+            if self.game_over:
                 self.center_msg('''Game Over!\nYour score: %d Press space to continue''' % self.score)
             else:
                 if self.paused:
