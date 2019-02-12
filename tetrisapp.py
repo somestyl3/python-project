@@ -40,8 +40,8 @@ class TApp(object):
         self.lines = 0
         pygame.time.set_timer(pygame.USEREVENT + 1, 1000)
 
-    def display_msg(self, msg, topleft):
-        x, y = topleft
+    def display_msg(self, msg, top_left):
+        x, y = top_left
         for line in msg.splitlines():
             self.screen.blit(
                 self.default_font.render(
