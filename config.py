@@ -58,7 +58,7 @@ def check_collision(board, shape, offset):
 
 def remove_row(board, row):
     del board[row]
-    return [[0 for i in range(cols)]] + board
+    return [[0 for _ in range(cols)]] + board
 
 
 def join(mat1, mat2, mat2_off):
@@ -70,7 +70,7 @@ def join(mat1, mat2, mat2_off):
 
 
 def new_board():
-    board = [[0 for x in range(cols)]
-             for y in range(rows)]
-    board += [[1 for x in range(cols)]]
+    board = [[0 for _ in range(cols)]
+             for _ in range(rows)]
+    board += [[1 for _ in range(cols)]]
     return board
